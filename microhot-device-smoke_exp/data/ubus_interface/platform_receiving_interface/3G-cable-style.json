@@ -1,0 +1,11 @@
+{
+  "msgId": "b7518c70",
+  "type": 4193,
+  "cmd": 4525,
+  "moduleID": 255,
+  "timestamp": 1561974539900,
+  "data": {
+    "ipMode": "none"
+  },
+  "activeNow": 0
+}

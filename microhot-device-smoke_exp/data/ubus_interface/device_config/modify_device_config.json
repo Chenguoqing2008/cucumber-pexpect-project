@@ -1,0 +1,42 @@
+{
+  "msgId": "b7518c70",
+  "type": 4193,
+  "cmd": 4257,
+  "moduleID": 0,
+  "timestamp": 1575427040918,
+  "opDeviceParameter": [
+    {
+      "commonParameter": {
+        "tacMin": 0,
+        "tacMax": 65530,
+        "tacPeriod": 1800,
+        "bandWidth": 2,
+        "tac": 17147,
+        "redirected_earfcn": 38400,
+        "redirectedEarfcnFrameOffset": -1000,
+        "syncMode": 2,
+        "imsiReportInterval": 0,
+        "radioSwitch": 1,
+        "qRxLevMin": -70,
+        "measRptInterval": 0,
+        "interFreq": 39325
+      },
+      "operationType": "M",
+      "Frequency": [
+        {
+          "upFrequency": 38950,
+          "downFrequency": 38950,
+          "priority": 0,
+          "rsrp": 0,
+          "pci": 5,
+          "plmn": "460.00",
+          "frameOffset": 0,
+          "powerLevel": 3
+        }
+      ]
+    }
+  ],
+  "activeNow": 1
+}
+
+

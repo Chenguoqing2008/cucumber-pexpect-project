@@ -1,0 +1,11 @@
+[submodule "srv"]
+  path = srv
+  url = ../../microhot-device/srv.git
+  
+[submodule "enb_deamon"]
+  path = enb_deamon
+  url = ../../microhot-device/enb_deamon.git
+ 
+[submodule "microhot-device"]
+  path = microhot-device
+  url = ../../deviceauto/microhot-device.git
