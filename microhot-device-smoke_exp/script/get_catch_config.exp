@@ -1,9 +1,0 @@
-#!/usr/bin/pexpect
-ssh = pexpect.spawn('ssh root@192.168.238.100')
-ssh.expect('password:')
-ssh.send("$9@!&*(!7@#n?\r")
-ssh.expect("#")
-ssh.sendline("cd config")
-ssh.expect('#')
-ssh.sendline("cat catch_config")
-ss.send
