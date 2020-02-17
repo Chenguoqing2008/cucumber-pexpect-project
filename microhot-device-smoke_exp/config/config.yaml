@@ -1,0 +1,19 @@
+microhot_device:
+  account: root
+  hotdeviceIP: 127.0.0.1
+  default_gateway: 127.0.0.1
+  gateway_66: 127.0.0.1
+  PASSWORD: '11111'
+  MACHINE_PASSWORD: 'abc'
+  default_band: '192.168.66.'
+detect_code:
+  base_url: http://127.0.0.1
+  version_management:
+    upload: /upload
+    add: /add
+    download: /download/
+    query: /query
+    push: /push
+    querypush: /queryPush/
+    query_push_record: /queryPushRecord
+    delete_versionid: /delete/

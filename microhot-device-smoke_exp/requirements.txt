@@ -1,0 +1,7 @@
+behave>=1.2.6
+allure-behave>=2.7.0
+requests>=2.22.0
+PyHamcrest>=1.9.0
+pexpect>=4.7.0
+requests-toolbelt>=0.9.1
+PyYAML>=5.1.2

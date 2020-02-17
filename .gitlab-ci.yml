@@ -1,0 +1,97 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_STRATEGY: clone
+
+    
+stages:
+#   - compile-build
+  - smoke-test
+  - display-report
+#   - publish-for-verification
+    
+
+# compile-and-build:
+#   image: ceregousa/ubuntu-git
+#   before_script:
+#     - ARM_HOME=`cd arm-2010.09;pwd`
+#     - export PATH=$ARM_HOME/bin:$PATH
+#     - apt-get install libc6-i386
+#     - rm -rf .git/modules/*
+#     - git submodule add -b $SRV_BRANCH ../../microhot-device/srv.git
+#     - git submodule add -b $ENB_DEAMON_BRANCH ../../microhot-device/enb_deamon.git
+#   stage: compile-build
+#   tags:
+#     - sanity-test
+#   script:
+#      - rm -rf /mnt/report/*
+#      - echo 'current running devicetyp is $DEVICETYPE, version is $VERSION.'
+#      - cd script
+#      - ./srv_build.sh
+#      - ./deamon_build.sh
+#      - cd ../V2.0
+#      - ./mk-all.sh $DEVICETYPE $VERSION
+#      - rm -rf /mnt/code/*
+#      - cp -R pkg /mnt/code/
+
+
+smoke-testing-v4.0.0:
+  image: cgqcewisec/cewisec:1.0
+  before_script:
+    - IP=`cat $CONFIG|awk -v argument='' -F ':' '{for(i=1;i<=NR;i++) {if($1=="v4.0.0"&&$2==1) {argument=$3;$3="";print argument}}}'`
+    - DEVICEID=`cat $CONFIG|awk -v argument='' -F ':' '{for(i=1;i<=NR;i++) {if($1=="v4.0.0"&&$2==1) {argument=$4;$4="";print argument}}}'`
+    - git submodule add -b $TESTING_BRANCH ../../deviceauto/microhot-device
+  stage: smoke-test
+  tags:
+    - smoke-testing
+  script:
+    - rm -rf /mnt/tmp_report/report1/*
+    - cd microhot-device
+    - python3.6 setup.py install
+    - behave --tags=V4.0.0 -D IP=$IP -D deviceId=$DEVICEID -D pkg_version=$VERSION -D devicetype=$DEVICETYPE -f allure_behave.formatter:AllureFormatter -o /mnt/tmp_report/report1 ./features/*.feature
+ 
+ 
+smoke-testing-v4.0.1:
+  image: cgqcewisec/cewisec:1.0
+  before_script:
+    - IP=`cat $CONFIG|awk -v argument='' -F ':' '{for(i=1;i<=NR;i++) {if($1=="v4.0.1"&&$2==1) {argument=$3;$3="";print argument}}}'`
+    - DEVICEID=`cat $CONFIG|awk -v argument='' -F ':' '{for(i=1;i<=NR;i++) {if($1=="v4.0.1"&&$2==1) {argument=$4;$4="";print argument}}}'`
+    - git submodule add -b $TESTING_BRANCH ../../deviceauto/microhot-device
+  stage: smoke-test
+  tags:
+    - sanity-test
+  script:
+    - rm -rf /mnt/tmp_report/report2/*
+    - cd microhot-device
+    - python3.6 setup.py install
+    - behave --tags=V4.0.1 -D IP=$IP -D deviceId=$DEVICEID -D pkg_version=$VERSION -D devicetype=$DEVICETYPE -f allure_behave.formatter:AllureFormatter -o /mnt/tmp_report/report2 ./features/*.feature
+   
+  
+display-report:
+  image: cgqcewisec/cewisec:1.0
+  before_script:
+    - ALLURE_HOME=`cd allure-2.9.0;pwd`
+    - export PATH=$ALLURE_HOME/bin:$PATH
+    - rm -rf /mnt/report/*
+    - cp /mnt/tmp_report/report2/* /mnt/report/
+    - cp /mnt/tmp_report/report1/* /mnt/report/
+  stage: display-report
+  tags:
+    - sanity-test
+  script:
+    - cd script
+    - python3.6  parse_file.py  /mnt/report/
+    - allure serve -p 41775 /mnt/report/
+  when: on_failure
+
+       
+# publish-package-to-ftp-for-verification:
+#   image: ubuntu:16.04
+#   stage: publish-for-verification
+#   tags:
+#      - sanity-test
+#   script:
+#      - cd /home/ftp-docs/pre-release
+#      - nowtime=`date "+%Y%m%d%H%M%S"`
+#      - mkdir $nowtime
+#      - cd /mnt/code
+#      - cp -R pkg /home/ftp-docs/pre-release/$nowtime/
